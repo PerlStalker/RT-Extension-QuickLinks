@@ -1,0 +1,33 @@
+<div class="quick-links">
+<&| /Widgets/TitleBox, title => loc('Quick links'), class => 'quick-links' &>
+
+<ul>
+% foreach my $link (@links) {
+%   if ($link->{url} eq '---') {
+ </ul>
+%     if ($link->{name}) {
+  <b><% $link->{name} %></b>
+%     }
+ <ul>
+%   } else {
+ <li><a href="<% $link->{url} %>" 
+%      if ($link->{target}) {
+target="<% $link->{target} %>"
+%} 
+><% $link->{name} %></a></li>
+%   }
+% }
+</ul>
+
+</&>
+</div>
+
+<%init>
+    ;
+my @links = @{ RT->Config->Get('quicklinks') };
+
+foreach my $link (@links) {
+    $link->{url} =~ s/__CurrentUser__/$session{'CurrentUser'}->Name/e;
+}
+
+</%init>
